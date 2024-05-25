@@ -1,4 +1,5 @@
 // Je recup ma connexion dans la variable sequilize
+
 // et mes types de champs SQL dans DataTypes
 export default (connection, DataTypes) => {
     connection.define(
@@ -26,6 +27,14 @@ export default (connection, DataTypes) => {
                 defaultValue: false
             },
             stock: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            user_fk:{
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            categorie_fk:{
                 type: DataTypes.INTEGER,
                 allowNull: false
             }

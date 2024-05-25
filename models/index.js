@@ -51,20 +51,13 @@ const {
    
    
 } = connection.models;
+User.hasMany(Article, { foreignKey: 'user_fk' });
+Article.belongsTo(User, { foreignKey: 'user_fk' });
 
+Categorie.hasMany(Article, { foreignKey: 'categorie_fk' });
+Article.belongsTo(Categorie, { foreignKey: 'categorie_fk' });
 
-/*Article.hasMany(Categorie, { as: "categorie" });
-Categorie.belongsTo(Article);*/
-User.hasMany(Article, { as: "articles" });
-// belongsTo va permettre de créer le lien entre Article et User
-// Dans Article, il va rajouter la colonne UserId
-Article.belongsTo(User);
-
-// Categorie Article:
-
-
-
-await connection.sync(/*{alter:true}*/);
+await connection.sync(/*{alter: true}*/);
 console.log('Synchro OK');
 
 
