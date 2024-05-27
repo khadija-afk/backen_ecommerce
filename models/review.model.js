@@ -2,21 +2,21 @@ export default (connection, DataTypes) => {
     const Review = connection.define(
         'Review',
         {
-            user_id: {
+            user_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                /*references: {
-                    model: 'Users', // Name of the target model
+                references: {
+                    model: 'users', // Name of the target model
                     key: 'id' // Key in the target model that this refers to
-                }*/
+                }
             },
-            product_id: {
+            product_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                /*references: {
-                    model: 'Products', // Name of the target model
+                references: {
+                    model: 'articles', // Name of the target model
                     key: 'id' // Key in the target model that this refers to
-                }*/
+                }
             },
             rating: {
                 type: DataTypes.INTEGER,
@@ -26,11 +26,7 @@ export default (connection, DataTypes) => {
                 type: DataTypes.TEXT,
                 allowNull: true
             },
-            created_at: {
-                type: DataTypes.DATE,
-                allowNull: false,
-                defaultValue: DataTypes.NOW
-            }
+
         },
         {
             timestamps: false,

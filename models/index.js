@@ -72,8 +72,24 @@ Order.belongsTo(User, { foreignKey: 'user_fk' });
 Article.hasMany(OrderItem, { foreignKey: 'product_fk' });
 OrderItem.belongsTo(Article, { foreignKey: 'product_fk' });
 
-// Cart.hasMany(CartItem, { foreignKey: 'cart_fk' });
-// CartItem.belongsTo(Cart, { foreignKey: 'cart_fk' });
+// Définir les relations User - Review
+User.hasMany(Review, { foreignKey: 'user_fk' });
+Review.belongsTo(User, { foreignKey: 'user_fk' });
+
+// Définir les relations Article - Review
+Article.hasMany(Review, { foreignKey: 'product_fk' });
+Review.belongsTo(Article, { foreignKey: 'product_fk' });
+
+// Définir les relations User - Cart
+User.hasMany(Cart, { foreignKey: 'user_fk' });
+Cart.belongsTo(User, { foreignKey: 'user_fk' });
+
+// Définir les relations CartItem-Cart et CartItem-Article
+Cart.hasMany(CartItem, { foreignKey: 'cart_fk' });
+CartItem.belongsTo(Cart, { foreignKey: 'cart_fk' });
+
+Article.hasMany(CartItem, { foreignKey: 'product_fk' });
+CartItem.belongsTo(Article, { foreignKey: 'product_fk' });
 
 const syncModels = async () => {
   try {

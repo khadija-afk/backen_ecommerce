@@ -2,21 +2,21 @@ export default (connection, DataTypes) => {
     const CartItem = connection.define(
         'CartItem',
         {
-            cart_id: {
+            cart_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                /*references: {
-                    model: 'Cart', // Name of the target model
-                    key: 'cart_id' // Key in the target model that this refers to
-                }*/
+                references: {
+                    model: 'carts', // Name of the target model
+                    key: 'id' // Key in the target model that this refers to
+                }
             },
-            product_id: {
+            product_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                /*references: {
-                    model: 'Product', // Name of the target model
-                    key: 'product_id' // Key in the target model that this refers to
-                }*/
+                references: {
+                    model: 'articles', // Name of the target model
+                    key: 'id' // Key in the target model that this refers to
+                }
             },
             quantity: {
                 type: DataTypes.INTEGER,
