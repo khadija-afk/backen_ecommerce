@@ -2,19 +2,22 @@ export default (connection, DataTypes) => {
     const Order = connection.define(
         'Order',
         {
-            user_id: {
+            user_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                // Foreign key
+                references: {
+                    model: 'Users', // Assurez-vous que le nom du modèle est correct
+                    key: 'id'
+                }
+            },
+            order_date: {
+                type: DataTypes.DATE,
+                allowNull: false,
+                defaultValue: DataTypes.NOW
             },
             status: {
                 type: DataTypes.STRING,
                 allowNull: false
-            },
-            total_amount: {
-                type: DataTypes.FLOAT,
-                allowNull: false,
-                unique: true
             },
             shipping_address: {
                 type: DataTypes.STRING,
@@ -31,10 +34,14 @@ export default (connection, DataTypes) => {
             shipping_country: {
                 type: DataTypes.STRING,
                 allowNull: false
-            }
-        },
-        { timestamps: true }
-    );
-
-    return Order;
-};
+            },
+            total_amount: {
+                type: DataTypes.FLOAT,
+                allowNull: false
+            },
+        }, {
+            timestamps: true
+        });
+    
+        return Order;
+    };

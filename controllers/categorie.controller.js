@@ -65,7 +65,7 @@ export const deleteCategory = async (req, res) => {
             return res.status(404).json({ error: 'Catégorie non trouvée' });
         }
         await category.destroy();
-        res.status(204).send();
+        res.status(200).json({ message: "Categorie deleted" });
     } catch (error) {
         console.error('Erreur lors de la suppression de la catégorie:', error);
         res.status(500).json({ error: 'Erreur serveur lors de la suppression de la catégorie' });

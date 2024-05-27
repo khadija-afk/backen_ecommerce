@@ -2,21 +2,21 @@ export default (connection, DataTypes) => {
     const OrderItem = connection.define(
         'OrderItem',
         {
-            order_id: {
+            order_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                /*references: {
-                    model: 'Orders', // name of the target model
-                    key: 'id' // key in the target model that this refers to
-                }*/
+                references: {
+                    model: 'orders',
+                    key: 'id'
+                }
             },
-            product_id: {
+            product_fk: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                /*references: {
-                    model: 'Products', // name of the target model
-                    key: 'id' // key in the target model that this refers to
-                }*/
+                references: {
+                    model: 'articles',
+                    key: 'id'
+                }
             },
             quantity: {
                 type: DataTypes.INTEGER,

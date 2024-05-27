@@ -1,30 +1,30 @@
-import { Sequelize } from "sequelize";
-import userModel from '../models/user.model.js'
-import articleModel from './article.model.js'
-import categorieModel from './catégories.model.js'
-import orderModel from './order.model.js'
-import orderItemModel from './orderItem.model.js'
-import reviewModel from './review.model.js'
-import cartModel from './cart.model.js'
-import cartItemModel from './cartItem.model.js'
-import paymentDetailModel from './paymentDetail.model.js'
+import { Sequelize } from 'sequelize';
+import userModel from '../models/user.model.js';
+import articleModel from './article.model.js';
+import categorieModel from './catégories.model.js';
+import orderModel from './order.model.js';
+import orderItemModel from './orderItem.model.js';
+import reviewModel from './review.model.js';
+import cartModel from './cart.model.js';
+import cartItemModel from './cartItem.model.js';
+import paymentDetailModel from './paymentDetail.model.js';
 
 // Nouvelle connexion à la DB
 const connection = new Sequelize(
-    'e_commerce', // Nom de la base de donnée
-    'root', // identifiant Mysql
-    '', // Mot de passe Mysql
-    {
-        host: 'localhost', // URL de mySQL
-        dialect: 'mysql'
-    }
+  'e_commerce', // Nom de la base de donnée
+  'root', // identifiant Mysql
+  '', // Mot de passe Mysql
+  {
+    host: 'localhost', // URL de mySQL
+    dialect: 'mysql'
+  }
 );
 
 try {
-    await connection.authenticate();
-    console.log('Connection has been established successfully.');
+  await connection.authenticate();
+  console.log('Connection has been established successfully.');
 } catch (error) {
-    console.error('Unable to connect to the database:', error);
+  console.error('Unable to connect to the database:', error);
 }
 
 userModel(connection, Sequelize);
@@ -37,29 +37,64 @@ cartModel(connection, Sequelize);
 cartItemModel(connection, Sequelize);
 paymentDetailModel(connection, Sequelize);
 
-
 const {
-    User,
-    Article,
-    Categorie,
-    Order,
-    OrderItem,
-    Review,
-    Cart,
-    CartItem,
-    PaymentDetail
-   
-   
+  User,
+  Article,
+  Categorie,
+  Order,
+  OrderItem,
+  Review,
+  Cart,
+  CartItem,
+  PaymentDetail
 } = connection.models;
+
+// Définir les relations User Article
 User.hasMany(Article, { foreignKey: 'user_fk' });
 Article.belongsTo(User, { foreignKey: 'user_fk' });
 
+// Définir les relations Categorie Article
 Categorie.hasMany(Article, { foreignKey: 'categorie_fk' });
 Article.belongsTo(Categorie, { foreignKey: 'categorie_fk' });
 
-await connection.sync(/*{alter: true}*/);
-console.log('Synchro OK');
+// Définir les relations Order User
+User.hasMany(Order, { foreignKey: 'user_fk' });
+Order.belongsTo(User, { foreignKey: 'user_fk' });
 
+// Définir les relations supplémentaires si nécessaire
+
+
+//Définir les relations entre Order et OrderItem
+ Order.hasMany(OrderItem, { foreignKey: 'order_fk' });
+ OrderItem.belongsTo(Order, { foreignKey: 'order_fk' });
+
+ // Définir les relations Article - OrderItem
+Article.hasMany(OrderItem, { foreignKey: 'product_fk' });
+OrderItem.belongsTo(Article, { foreignKey: 'product_fk' });
+
+// Cart.hasMany(CartItem, { foreignKey: 'cart_fk' });
+// CartItem.belongsTo(Cart, { foreignKey: 'cart_fk' });
+
+const syncModels = async () => {
+  try {
+    // Synchroniser les modèles séparément
+    await User.sync({ alter: true });
+    await Categorie.sync({ alter: true });
+    await Article.sync({ alter: true });
+    await Order.sync({ alter: true });
+    await OrderItem.sync({ alter: true });
+    await Review.sync({ alter: true });
+    await Cart.sync({ alter: true });
+    await CartItem.sync({ alter: true });
+    await PaymentDetail.sync({ alter: true });
+
+    console.log('All models were synchronized successfully.');
+  } catch (error) {
+    console.error('Unable to synchronize the database:', error);
+  }
+};
+
+syncModels();
 
 export {
   User,
@@ -71,6 +106,4 @@ export {
   Cart,
   CartItem,
   PaymentDetail
-  
-  
-}
+};

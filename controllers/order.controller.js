@@ -28,15 +28,15 @@ export const getOrderById = async (req, res) => {
 // Créer une nouvelle commande
 export const createOrder = async (req, res) => {
     try {
-        const { user_id, status, total_amount, shipping_address, shipping_city, shipping_postal_code, shipping_country } = req.body;
-        if (!user_id || !status || !total_amount || !shipping_address || !shipping_city || !shipping_postal_code || !shipping_country) {
+        const { user_fk, status, total_amount, shipping_address, shipping_city, shipping_postal_code, shipping_country } = req.body;
+        if (!user_fk || !status || !total_amount || !shipping_address || !shipping_city || !shipping_postal_code || !shipping_country) {
             return res.status(400).json({ error: 'Tous les champs sont requis' });
         }
-        const newOrder = await Order.create({ user_id, status, total_amount, shipping_address, shipping_city, shipping_postal_code, shipping_country });
+        const newOrder = await Order.create({ user_fk, status, total_amount, shipping_address, shipping_city, shipping_postal_code, shipping_country });
         res.status(201).json(newOrder);
     } catch (error) {
         console.error('Erreur lors de la création de la commande:', error);
-        res.status(500).json({ error: 'Erreur serveur lors de la création de la commande' });
+        res.status(500).json({ error: 'Erreur serveur lors de la création de la commande', detail: error.message});
     }
 };
 
@@ -64,7 +64,7 @@ export const deleteOrder = async (req, res) => {
             return res.status(404).json({ error: 'Commande non trouvée' });
         }
         await order.destroy();
-        res.status(204).send();
+        res.status(200).json({ message: 'Commande supprimée' });
     } catch (error) {
         console.error('Erreur lors de la suppression de la commande:', error);
         res.status(500).json({ error: 'Erreur serveur lors de la suppression de la commande' });

@@ -49,11 +49,11 @@ export const register = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.findAll(); // Utilisation de findAll() au lieu de find()
     res.status(200).json(users);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error", details: error.message });
   }
 };
 
@@ -71,20 +71,18 @@ export const getById = async (req, res) => {
 
 export const updateById = async (req, res) => {
   try {
-    const updateUser = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    if (!updateUser) return res.status(404).json("User not found!");
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found!" });
+
+    await user.update(req.body);
 
     res.status(200).json({
       message: "User updated",
-      updateUser
+      user
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error", details: error.message });
   }
 };
 

@@ -21,7 +21,7 @@ import routerCartItem from './routes/cartItem.js'
 const app = express()
 
 // PORT
-const PORT = env.port || 8080
+const PORT = env.port || 3333
 import dotenv from 'dotenv';
 
 dotenv.config();
